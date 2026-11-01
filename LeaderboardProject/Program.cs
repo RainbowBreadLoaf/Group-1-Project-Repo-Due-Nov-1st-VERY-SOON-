@@ -28,6 +28,7 @@ public class program
             Console.Write("Select an option (1 -6): ");
            
             string choice = Console.ReadLine();
+            bool viewSorted = false;
 
             switch (choice) 
             {
@@ -38,27 +39,25 @@ public class program
                     break;
                     }
 
-                    Console,WriteLine(" -Scoreboard A-");
-                    foreach (KeyValuePair<string, List<int>> player in scoreboardProject) 
+                    Console,WriteLine(" -Scoreboard-");
+                    if(viewSorted == true)
+                    {
+                    foreach (KeyValuePair<string, List<int>> player in sortedScoreboardProject) 
+                    
                     {
                         string scores = string.Join(", ", player.Value);
                         Console.WriteLine($"Player: {player.Key}, Match Scores: {scores}");
                     }
-                    Console.WriteLine(" -Scoreboard B-");
-                    foreach (string playerName in scoreboardProject.Keys) 
+                }
+                    else 
                     {
-                        string scores = string.Join(", ", scoreboardProject[playerName]);
-                        Console.WriteLine($"Player: {playerName}, Match Scores: {scores}");
-                    }
-                    Console.WriteLine(" -Scoreboard C-");
-                    foreach (var (playerName, scores) in scoreboardProject)
-                    {
-                        string scores = string.Join(", ", scoresList);
-                        Console.WriteLine($"Player: {playerName}, Match Scores: {string.Join(", ", scores)}");
-                    }
-                    break;
-
-                case "2":
+                        foreach (KeyValuePair<string, List<int>> player in scoreboardProject) 
+                        {
+                            string scores = string.Join(", ", player.Value);
+                            Console.WriteLine($"Player: {player.Key}, Match Scores: {scores}");
+                        }
+                    }                        
+                     case "2":
                     Console.Write("Enter the new player's name: ");
                     string newPlayerName = Console.ReadLine();
 
@@ -84,10 +83,73 @@ public class program
                         }
                     }
                 break;
+                Case "3":
+                    Console.Write("Enter the player's name to add a score: ");
+                    string existingPlayerName = Console.ReadLine();
+
+                    if (scoreboardProject.ContainsKey(existingPlayerName)) 
+                    {
+                        Console.Write("Enter the score to add: ");
+                        if (int.TryParse(Console.ReadLine(), out int newScore)) 
+                        {
+                            scoreboardProject[existingPlayerName].Add(newScore);
+                            Console.WriteLine($"Score of {newScore} added for player {existingPlayerName}.");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Invalid score entered.");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Player not found.");
+                    }
+                    break;
+                case "4":
+                    Console.Write("Enter the player's name to remove: ");
+                    string playerToRemove = Console.ReadLine();
+
+                    if (scoreboardProject.ContainsKey(playerToRemove))
+                    {
+                        scoreboardProject.Remove(playerToRemove);
+                        Console.WriteLine($"Player {playerToRemove} removed successfully.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Player not found.");
+                    }
+                    break;
+                case "5":
+                 Console.WriteLine("------------------------------");
+                 Console.WriteLine("Please select how you would like to sort the scoreboard by typing the option in:"); 
+                 Console.WriteLine("1:Ascending order");
+                 Console.WriteLine("2:Descending order");
+                 Console.WriteLine("3: Unsorted order (Original order)");
+                 Console.WriteLine("------------------------------");
+                 choice = Console.ReadLine();
+                 switch (choice)
+                 {
+                    case "1":
+                    sortedScoreBoard = scoreboardProject.OrderBy(kv => kv.Key);
+                    viewSorted = true;
+                    break;
+                    case "2":
+                    sortedScoreBoard = scoreboardProject.OrderByDescending(kv => kv.Key);
+                    viewSorted = true;
+                    break;
+                    case "3":
+                    viewSorted = false;
+                    break;
+                 }
+                    Break;
+                case "6":
+                    running = false;
+                    Console.WriteLine("Exiting the Scoreboard Program. Goodbye!");
+                    break;
             }
         }
-        
-}
+}   
+
 
 
 
