@@ -147,7 +147,8 @@ public class program
                     Console.WriteLine("Exiting the Scoreboard Program. Goodbye!");
                     break;
             }
-        }
+                    }
+    }
 }   
 
 
